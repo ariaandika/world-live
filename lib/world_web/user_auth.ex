@@ -213,6 +213,18 @@ defmodule WorldWeb.UserAuth do
     end
   end
 
+  def require_admin(conn, _opts) do
+    if conn.assigns.current_user.role === "admin" do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not allowed to access this resource")
+      |> maybe_store_return_to()
+      |> redirect(to: ~p"/users")
+      |> halt()
+    end
+  end
+
   defp put_token_in_session(conn, token) do
     conn
     |> put_session(:user_token, token)

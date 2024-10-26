@@ -45,6 +45,15 @@ defmodule WorldWeb.Router do
     end
   end
 
+  scope "/", WorldWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_admin]
+
+    live_session :require_admin,
+      on_mount: [{WorldWeb.UserAuth, :ensure_authenticated}] do
+      live "/admin", Admin.Index
+    end
+  end
+
   ## Authentication routes
 
   scope "/", WorldWeb do

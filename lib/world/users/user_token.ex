@@ -81,6 +81,10 @@ defmodule World.Users.UserToken do
     build_hashed_token(user, context, user.email)
   end
 
+  def build_phone_token(user, context) do
+    build_hashed_token(user, context, user.phone)
+  end
+
   defp build_hashed_token(user, context, sent_to) do
     token = :crypto.strong_rand_bytes(@rand_size)
     hashed_token = :crypto.hash(@hash_algorithm, token)

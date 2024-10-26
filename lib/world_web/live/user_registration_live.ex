@@ -31,7 +31,9 @@ defmodule WorldWeb.UserRegistrationLive do
           Oops, something went wrong! Please check the errors below.
         </.error>
 
-        <.input field={@form[:email]} type="email" label="Email" required />
+        <.input field={@form[:name]} type="text" label="Name" required />
+        <.input field={@form[:phone]} type="text" label="Phone" required />
+        <.input field={@form[:role]} type="text" label="Role" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>

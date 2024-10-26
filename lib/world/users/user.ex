@@ -3,7 +3,10 @@ defmodule World.Users.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
+    field :name, :string
+    field :phone, :string
+    field :role, :string
+    # field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
@@ -37,9 +40,36 @@ defmodule World.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
-    |> validate_email(opts)
+    |> cast(attrs, [:name, :phone, :role, :password])
+    |> validate_name(opts)
+    |> validate_phone(opts)
+    |> validate_role(opts)
     |> validate_password(opts)
+    # |> validate_email(opts)
+  end
+
+  defp validate_name(changeset, _opts) do
+    changeset
+    |> validate_required([:name])
+    |> validate_length(:name, min: 4, max: 160)
+    |> validate_format(:name, ~r/^[\d\w _]*$/, message: "must have alphanumeric and spaces only")
+    # |> validate_unique(:name)
+  end
+
+  defp validate_phone(changeset, _opts) do
+    changeset
+    |> validate_required([:phone])
+    |> validate_length(:phone, min: 10, max: 15)
+    |> validate_format(:phone, ~r/^\d*$/)
+    # |> validate_unique(:phone)
+  end
+
+  defp validate_role(changeset, _opts) do
+    changeset
+    |> validate_required([:role])
+    |> validate_length(:role, max: 15)
+    |> validate_format(:role, ~r/user/, message: "unknown role")
+    # |> validate_unique(:name)
   end
 
   defp validate_email(changeset, opts) do
